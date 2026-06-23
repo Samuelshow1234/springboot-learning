@@ -1,9 +1,10 @@
 package com.luv2code.demo.rest;
 
 import com.luv2code.demo.entity.Student;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.annotation.PostConstruct;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +13,66 @@ import java.util.List;
 @RequestMapping("/api")
 public class StudentRestController {
 
-    // define endpoint for "/student" which return list of students
+    private List<Student> theStudents;
 
-    @GetMapping("/students")
-    public List<Student> getStudents() {
+    //define @PostConstruct to load the student data ... only once.
 
-        List<Student> theStudents = new ArrayList<>();
+    @PostConstruct
+    public void loadData(){
+        theStudents = new ArrayList<>();
 
         theStudents.add(new Student("Samuel", "Showunmi"));
         theStudents.add(new Student("Esther", "Showunmi"));
         theStudents.add(new Student("Israel", "Showunmi"));
 
+    }
+
+    // define endpoint for "/student" which return list of students
+
+    @GetMapping("/students")
+    public List<Student> getStudents() {
+
+
         return theStudents;
     }
+
+    // define endpoint "/students/{studentId} return student at index
+
+    @GetMapping("/students/{studentId}")
+    public Student getStudent(@PathVariable int studentId){
+
+        // just index into the list ... keep it simple for now
+
+        //check the studentId again list size
+
+        if((studentId >= theStudents.size()) || (studentId < 0)){
+            throw new StudentNotFoundException("Student id not found " + studentId);
+        }
+
+
+        return theStudents.get(studentId);
+    }
+
+    // Add an exception handler using @ExceptionHandler
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
