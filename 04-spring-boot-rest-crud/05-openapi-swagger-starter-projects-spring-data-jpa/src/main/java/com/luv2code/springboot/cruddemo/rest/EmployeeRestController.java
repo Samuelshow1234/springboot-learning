@@ -1,6 +1,6 @@
 package com.luv2code.springboot.cruddemo.rest;
 
-import com.luv2code.springboot.cruddemo.dao.EmployeeDAO;
+//import com.luv2code.springboot.cruddemo.dao.EmployeeDAO;
 import com.luv2code.springboot.cruddemo.entity.Employee;
 import com.luv2code.springboot.cruddemo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +99,7 @@ public class EmployeeRestController {
                                    @RequestBody Map<String, Object> patchPayLoad){
         Employee tempEmployee = employeeService.findById(employeeId);
 
-        // throw error if not founf
+        // throw error if not found
 
         if(tempEmployee==null){
             throw new RuntimeException("Employee ID NOT Found " + employeeId);
